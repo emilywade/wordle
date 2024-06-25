@@ -22,19 +22,21 @@ class Board:
     def print_board(self):
         print(" ".join(self.board))
 
+    def generate_random_word(self):
+        """
+        Function to generate a random word of given length.
+        Word selected from list provided words_list.txt (ref: https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt)
+        """
+        with open("words_list.txt") as f:
+            all_words = f.read().splitlines()
+            chosen_word = random.choice([i for i in all_words if len(i) == self.length])
+            print(chosen_word)
+            return chosen_word
 
-
-def generate_random_word(length):
-    """
-    Function to generate a random word of given length.
-    Word selected from list provided words_list.txt (ref: https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt)
-    """
-    with open("words_list.txt") as f:
-        all_words = f.read().splitlines()
-        return random.choice([i for i in all_words if len(i) == length])
-
-word = generate_random_word(5)
+# word = generate_random_word(5)
 # print(word)
 
 
-initial = Board(6, 5).print_board()
+board = Board(6, 5)
+board.print_board()
+board.generate_random_word()
