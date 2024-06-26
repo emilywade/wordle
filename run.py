@@ -111,20 +111,23 @@ def game_setup():
     """
     print("Welcome to Wordle!\n")
     player_name = input("What is your name?\n")
-    print(f"Thanks for playing, {player_name}")
-    print("INSTRUCTIONS OF GAME PLAY TO GO HERE") 
+    print(f"Thanks for playing, {player_name}\n")
+    print("Guess the word! Simply enter your guess, review the feedback provided, and keep guessing!\n")
+    print("You can choose how many letters long the word is, and how many guesses you're allowed.\n")
+    print("After each guess you will be given some feedback to help you with your next guess.\n")
+    print("A letter in lowercase means it is a correct letter but in the wrong place.\n")
+    print("A letter in UPPERCASE means it is a correct letter in the correct place.\n") 
 
     length_options = [4, 5, 6]
     length_prompt = "How many letters long would you like your random word to contain? You can choose 4, 5, or 6.\n"
     length_error_message = "Invalid choice. Please choose 4, 5, or 6."
     length = get_valid_input(length_prompt, length_options, length_error_message)
-    print(f"You have chosen {length}-letter words.\n")
 
     guesses_allowed_options = [4, 6, 8]
     guesses_prompt = "How many guesses would you like to have? You can choose 4, 6, or 8.\n"
     guesses_error_message = "Invalid choice. Please choose 4, 6, or 8."
     guesses_allowed = get_valid_input(guesses_prompt, guesses_allowed_options, guesses_error_message)
-    print(f"You have chosen to have no more than {guesses_allowed} guesses.\n")
+    print(f"Great! You will have {guesses_allowed} attempts to guess the {length}-letter word.\n")
 
     return player_name, length, guesses_allowed
 
@@ -144,9 +147,9 @@ def main():
             print(f"You guessed: {guess}")
             print(f"Guesses remaining: {board.guesses_allowed}")
             if guess == chosen_word:
-                print("Congratulations! You guessed the word correctly!")
+                print(f"Congratulations, {player_name}! You correctly guessed {chosen_word} with {guesses_allowed} guesses left!")
                 break
     else:
-        print(f"Game over! The correct word was: {chosen_word}")
+        print(f"Sorry, {player_name}. Game over! The correct word was: {chosen_word}")
 
 main()
