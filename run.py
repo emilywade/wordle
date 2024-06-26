@@ -31,6 +31,19 @@ class Board:
             all_words = f.read().splitlines()
             chosen_word = random.choice([i for i in all_words if len(i) == self.length])
             return chosen_word
+    
+    def make_guess(self):
+        """
+        Function to ask the user to make a guess, decrease the guesses allowed, and return the guess.
+        """
+        guess = input("Enter your guess: ")
+        if len(guess) != self.length:
+            print(f"Invalid guess. Please enter a {self.length}-letter word.")
+            return None
+        self.guesses_allowed -= 1
+        self.guesses_used += 1
+        self.guesses.append(guess)
+        return guess
 
 
 def validate_choice(choice, valid_options):
@@ -86,5 +99,16 @@ def main():
     board = Board(length, guesses_allowed)
     chosen_word = board.generate_random_word()
     board.print_board()
+
+    while board.guesses_allowed > 0:
+        guess = board.make_guess()
+        if guess:
+            print(f"You guessed: {guess}")
+            print(f"Guesses remaining: {board.guesses_allowed}")
+            if guess == chosen_word:
+                print("Congratulations! You guessed the word correctly!")
+                break
+    else:
+        print(f"Game over! The correct word was: {chosen_word}")
 
 main()
