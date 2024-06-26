@@ -18,23 +18,33 @@ class Board:
         self.board = ["_" for x in range(int(length))]
         self.guesses_used = 0
         self.guesses = []
+        self.valid_words = self.load_words()
 
     def print_board(self):
         print(" ".join(self.board))
 
-    def generate_random_word(self):
+    def load_words(self):
         """
-        Function to generate a random word of given length.
-        Word selected from list provided words_list.txt (ref: https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt)
+        Load words from words_list.txt into a list.
+        (doc taken from https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt)
         """
         with open("words_list.txt") as f:
             all_words = f.read().splitlines()
-            chosen_word = random.choice([i for i in all_words if len(i) == self.length])
-            return chosen_word
+            valid_words = [i for i in all_words if len(i) == self.length]
+            return valid_words
+
+    def choose_random_word(self):
+        """
+        Randomly select a word from the load_words function
+        """
+        chosen_word = random.choice(self.valid_words)
+        return chosen_word
     
     def make_guess(self):
         """
-        Function to ask the user to make a guess, decrease the guesses allowed, and return the guess.
+        Function to ask the user to make a guess, decrease the guesses allowed, increase 
+        the guesses used and return the guess.
+        Checks the guess has a valid length and hasn't been guessed before.
         """
         while True:
             guess = input("Enter your guess: ")
@@ -42,6 +52,8 @@ class Board:
                 print(f"Invalid guess. Please enter a {self.length}-letter word.")
             elif guess in self.guesses:
                 print(f"You've already guessed '{guess}'. Try a different word.")
+            elif guess not in self.valid_words:
+                print(f"'{guess}' is not a valid word. Try a different word.")
             else:
                 self.guesses_allowed -= 1
                 self.guesses_used += 1
@@ -100,7 +112,7 @@ def main():
     """
     player_name, length, guesses_allowed = game_setup()
     board = Board(length, guesses_allowed)
-    chosen_word = board.generate_random_word()
+    chosen_word = board.choose_random_word()
     board.print_board()
 
     while board.guesses_allowed > 0:
