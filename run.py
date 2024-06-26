@@ -38,9 +38,10 @@ class Board:
         Randomly select a word from the load_words function
         """
         chosen_word = random.choice(self.valid_words)
+        print(chosen_word)
         return chosen_word
     
-    def make_guess(self):
+    def make_guess(self, chosen_word):
         """
         Function to ask the user to make a guess, decrease the guesses allowed, increase 
         the guesses used and return the guess.
@@ -58,7 +59,29 @@ class Board:
                 self.guesses_allowed -= 1
                 self.guesses_used += 1
                 self.guesses.append(guess)
+                self.give_feedback(guess, chosen_word)
                 return guess
+    
+    def give_feedback(self, guess, chosen_word):
+        """
+        Provide feedback on the guessed word.
+        """
+        feedback = ["_" for _ in range(self.length)]
+        chosen_word_copy = list(chosen_word)
+
+        # check for correct letters in the correct place
+        for i in range(self.length):
+            if guess[i] == chosen_word[i]:
+                feedback[i] = guess[i].upper()
+                # marking letter as "used" so not used in next feedback step
+                chosen_word_copy[i] = None
+
+        # check for correct letters in the incorrect place
+        for i in range(self.length):
+            if guess[i] != chosen_word[i] and guess[i] in chosen_word_copy:
+                feedback[i] = guess[i].lower()
+
+        print("Feedback: " + " ".join(feedback))
 
 
 def validate_choice(choice, valid_options):
@@ -116,7 +139,7 @@ def main():
     board.print_board()
 
     while board.guesses_allowed > 0:
-        guess = board.make_guess()
+        guess = board.make_guess(chosen_word)
         if guess:
             print(f"You guessed: {guess}")
             print(f"Guesses remaining: {board.guesses_allowed}")
