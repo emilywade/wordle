@@ -5,12 +5,13 @@ Guess the 5 letter word!
 
 import random
 
+
 class Board:
     """
     Board class which initialises game play.
-    Sets the length of the word, number of guesses allowed, number of guesses used
-    so far, and the list of guesses taken.
-    Stores the method for creating the board and generating the random word. 
+    Sets the length of the word, number of guesses allowed, number of
+    guesses used so far, and the list of guesses taken.
+    Stores the method for creating the board and generating the random word.
     """
     def __init__(self, length, guesses_allowed):
         self.length = int(length)
@@ -26,7 +27,8 @@ class Board:
     def load_words(self):
         """
         Load words from words_list.txt into a list.
-        (doc taken from https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt)
+        (doc taken from
+        https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt)
         """
         with open("words_list.txt") as f:
             all_words = f.read().splitlines()
@@ -38,21 +40,20 @@ class Board:
         Randomly select a word from the load_words function
         """
         chosen_word = random.choice(self.valid_words)
-        print(chosen_word)
         return chosen_word
-    
+
     def make_guess(self, chosen_word):
         """
-        Function to ask the user to make a guess, decrease the guesses allowed, increase 
-        the guesses used and return the guess.
+        Function to ask the user to make a guess, decrease the guesses
+        allowed, increase the guesses used and return the guess.
         Checks the guess has a valid length and hasn't been guessed before.
         """
         while True:
-            guess = input("Enter your guess: ")
+            guess = input("Enter your guess: \n")
             if len(guess) != self.length:
-                print(f"Invalid guess. Please enter a {self.length}-letter word.")
+                print(f"Please enter a {self.length}-letter word.")
             elif guess in self.guesses:
-                print(f"You've already guessed '{guess}'. Try a different word.")
+                print(f"You've already guessed '{guess}'. Try again.")
             elif guess not in self.valid_words:
                 print(f"'{guess}' is not a valid word. Try a different word.")
             else:
@@ -61,7 +62,7 @@ class Board:
                 self.guesses.append(guess)
                 self.give_feedback(guess, chosen_word)
                 return guess
-    
+
     def give_feedback(self, guess, chosen_word):
         """
         Provide feedback on the guessed word.
@@ -90,10 +91,11 @@ def validate_choice(choice, valid_options):
     """
     return choice in valid_options
 
+
 def get_valid_input(prompt, valid_options, error_message):
     """
     Repeatedly prompt the user for input until a valid choice is made.
-    Uses the validate_choice() function to check for validity. 
+    Uses the validate_choice() function to check for validity.
     """
     while True:
         try:
@@ -105,31 +107,53 @@ def get_valid_input(prompt, valid_options, error_message):
         except ValueError:
             print("Invalid input. Please enter a number.")
 
+
 def game_setup():
     """
-    Setting up the initial game. 
+    Setting up the initial game.
     """
     print("Welcome to Wordle!\n")
     player_name = input("What is your name?\n")
     print(f"Thanks for playing, {player_name}\n")
-    print("Guess the word! Simply enter your guess, review the feedback provided, and keep guessing!\n")
-    print("You can choose how many letters long the word is, and how many guesses you're allowed.\n")
-    print("After each guess you will be given some feedback to help you with your next guess.\n")
-    print("A letter in lowercase means it is a correct letter but in the wrong place.\n")
-    print("A letter in UPPERCASE means it is a correct letter in the correct place.\n") 
+    print("Can you guess the word?\n")
+    print("""
+        You can choose how many letters long the word is,
+        and how many guesses you're allowed.\n
+    """)
+    print("""
+        After each guess you will be given some
+        feedback to help you with your next guess.\n
+    """)
+    print("""
+        A letter in lowercase means it is a correct
+        letter but in the wrong place.\n
+    """)
+    print("""
+        A letter in UPPERCASE means it is a correct
+        letter in the correct place.\n
+    """)
 
     length_options = [4, 5, 6]
-    length_prompt = "How many letters long would you like your random word to contain? You can choose 4, 5, or 6.\n"
+    length_prompt = """
+        How many letters long would you like your random word to
+        contain? You can choose 4, 5, or 6.\n
+    """
     length_error_message = "Invalid choice. Please choose 4, 5, or 6."
-    length = get_valid_input(length_prompt, length_options, length_error_message)
+    len = get_valid_input(length_prompt, length_options, length_error_message)
 
-    guesses_allowed_options = [4, 6, 8]
-    guesses_prompt = "How many guesses would you like to have? You can choose 4, 6, or 8.\n"
-    guesses_error_message = "Invalid choice. Please choose 4, 6, or 8."
-    guesses_allowed = get_valid_input(guesses_prompt, guesses_allowed_options, guesses_error_message)
-    print(f"Great! You will have {guesses_allowed} attempts to guess the {length}-letter word.\n")
+    g_allowed_options = [4, 6, 8]
+    g_prompt = """
+        How many guesses would you like to have?
+        You can choose 4, 6, or 8.\n
+    """
+    g_error_message = "Invalid choice. Please choose 4, 6, or 8."
+    g_allowed = get_valid_input(g_prompt, g_allowed_options, g_error_message)
+    print(f"""
+        Great! You will have {g_allowed} attempts to guess
+        the {len}-letter word.\n
+    """)
 
-    return player_name, length, guesses_allowed
+    return player_name, len, g_allowed
 
 
 def main():
@@ -147,9 +171,16 @@ def main():
             print(f"You guessed: {guess}")
             print(f"Guesses remaining: {board.guesses_allowed}")
             if guess == chosen_word:
-                print(f"Congratulations, {player_name}! You correctly guessed {chosen_word} with {guesses_allowed} guesses left!")
+                print(f"""
+                    Congratulations, {player_name}! You correctly guessed
+                    {chosen_word} with {guesses_allowed} guesses left!
+                """)
                 break
     else:
-        print(f"Sorry, {player_name}. Game over! The correct word was: {chosen_word}")
+        print(f"""
+            Sorry, {player_name}. Game over!
+            The correct word was: {chosen_word}
+        """)
+
 
 main()
