@@ -30,7 +30,6 @@ class Board:
         with open("words_list.txt") as f:
             all_words = f.read().splitlines()
             chosen_word = random.choice([i for i in all_words if len(i) == self.length])
-            print(chosen_word)
             return chosen_word
 
 
@@ -58,6 +57,7 @@ def main():
     """
     player_name, length, guesses_allowed = game_setup()
     board = Board(length, guesses_allowed)
+    chosen_word = board.generate_random_word()
     board.print_board()
 
 main()
