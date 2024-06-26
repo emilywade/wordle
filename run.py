@@ -33,22 +33,49 @@ class Board:
             return chosen_word
 
 
-# board = Board(6, 5)
-# board.print_board()
-# board.generate_random_word()
+def validate_choice(choice, valid_options):
+    """
+    Check whether the user's input is within a specified list of valid options.
+    """
+    return choice in valid_options
+
+def get_valid_input(prompt, valid_options, error_message):
+    """
+    Repeatedly prompt the user for input until a valid choice is made.
+    Uses the validate_choice() function to check for validity. 
+    """
+    while True:
+        try:
+            user_input = int(input(prompt))
+            if validate_choice(user_input, valid_options):
+                return user_input
+            else:
+                print(error_message)
+        except ValueError:
+            print("Invalid input. Please enter a number.")
 
 def game_setup():
+    """
+    Setting up the initial game. 
+    """
     print("Welcome to Wordle!\n")
     player_name = input("What is your name?\n")
     print(f"Thanks for playing, {player_name}")
-    print("INSTRUCTIONS OF GAME PLAY TO GO HERE")
-    length = input("How many letters long would you like your random word to contain? You can choose 4, 5 or 6.")
-    print(f"You have choosen {length} letter words.")
-    guesses_allowed = input("How many guesses would you like to have? You can choose 4, 6 or 8.")
-    print(f"You have choosen to have no more than {guesses_allowed} guesses.")
-    return player_name, length, guesses_allowed
+    print("INSTRUCTIONS OF GAME PLAY TO GO HERE") 
 
-# game_setup()
+    length_options = [4, 5, 6]
+    length_prompt = "How many letters long would you like your random word to contain? You can choose 4, 5, or 6.\n"
+    length_error_message = "Invalid choice. Please choose 4, 5, or 6."
+    length = get_valid_input(length_prompt, length_options, length_error_message)
+    print(f"You have chosen {length}-letter words.\n")
+
+    guesses_allowed_options = [4, 6, 8]
+    guesses_prompt = "How many guesses would you like to have? You can choose 4, 6, or 8.\n"
+    guesses_error_message = "Invalid choice. Please choose 4, 6, or 8."
+    guesses_allowed = get_valid_input(guesses_prompt, guesses_allowed_options, guesses_error_message)
+    print(f"You have chosen to have no more than {guesses_allowed} guesses.\n")
+
+    return player_name, length, guesses_allowed
 
 
 def main():
