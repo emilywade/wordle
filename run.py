@@ -36,14 +36,17 @@ class Board:
         """
         Function to ask the user to make a guess, decrease the guesses allowed, and return the guess.
         """
-        guess = input("Enter your guess: ")
-        if len(guess) != self.length:
-            print(f"Invalid guess. Please enter a {self.length}-letter word.")
-            return None
-        self.guesses_allowed -= 1
-        self.guesses_used += 1
-        self.guesses.append(guess)
-        return guess
+        while True:
+            guess = input("Enter your guess: ")
+            if len(guess) != self.length:
+                print(f"Invalid guess. Please enter a {self.length}-letter word.")
+            elif guess in self.guesses:
+                print(f"You've already guessed '{guess}'. Try a different word.")
+            else:
+                self.guesses_allowed -= 1
+                self.guesses_used += 1
+                self.guesses.append(guess)
+                return guess
 
 
 def validate_choice(choice, valid_options):
